@@ -4,6 +4,7 @@ import {
   Link,
   Outlet,
   createRootRouteWithContext,
+  useRouterState,
 } from '@tanstack/react-router'
 import { DehydrateRouter } from '@tanstack/react-router-server/client'
 import { RouterContext } from '../routerContext'
@@ -13,6 +14,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 function RootComponent() {
+  const location = useRouterState({ select: (s) => s.location })
+  console.log('[location]', location)
+
   return (
     <html lang="en">
       <head>
@@ -38,6 +42,24 @@ function RootComponent() {
       </head>
       <body>
         <div className="p-2 flex gap-2 text-lg">
+          <Link
+            to="/repro/$id"
+            params={{ id: '✅' }}
+            activeProps={{
+              className: 'font-bold',
+            }}
+          >
+            Repro1
+          </Link>
+          <Link
+            to="/repro/$id"
+            params={{ id: encodeURI('✅') }}
+            activeProps={{
+              className: 'font-bold',
+            }}
+          >
+            Repro2
+          </Link>
           <Link
             to="/"
             activeProps={{
